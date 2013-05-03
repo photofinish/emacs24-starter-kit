@@ -1,15 +1,14 @@
-#+TITLE: Emacs Starter Kit
+#+TITLE: Emacs 起步套件
 #+OPTIONS: toc:2 num:nil ^:nil
 
-#+begin_quote
-  Emacs outshines all other editing software in approximately the same
-  way that the noonday sun does the stars. It is not just bigger and
-  brighter; it simply makes everything else vanish.
+#+BEGIN_QUOTE
+Emacs 犹如中午的太阳辉耀着群星般令所有其它的编辑软件失色。它不止是大而亮；它只是
+令所有其它的一切都消失了。
 
-  -- Neal Stephenson, "In the Beginning was the Command Line"
-#+end_quote
+-- 尼尔．史迪芬森，《起初，只有命令行》
+#+END_QUOTE
 
-* Introduction
+* 简介
   :PROPERTIES:
   :CUSTOM_ID: introduction
   :END:
@@ -225,7 +224,7 @@ specified. See the file [[file:COPYING][COPYING]] for details.
 
 The latest version is at http://github.com/eschulte/emacs24-starter-kit/
 
-* Implementation
+* 实现
   :PROPERTIES:
   :CUSTOM_ID: implementation
   :END:
@@ -457,7 +456,7 @@ After we've loaded all the Starter Kit defaults, lets load the User's stuff.
   (load custom-file 'noerror)
 #+end_src
 
-* Footnotes
+* 脚注
 
 [1] If you already have a directory at =~/.emacs.d= move it out of the
     way and put this there instead.
