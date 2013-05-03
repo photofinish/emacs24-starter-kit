@@ -1,18 +1,17 @@
-This is a Literate Programming fork of the original Emacs Starter Kit
+这是原来 Emacs 启动套件 (Starter Kit) 的一个文学编程分支。
 
-This should provide a saner set of defaults than you get normally with
-Emacs. It's intended for beginners, but provides a good elisp
-initialization structure for all levels of users.
+它提供的默认设置比你通常使用的 Emacs 要更合理些。虽然其目标群体是初学者，但对于
+不同层次的用户它也提供了一套很好的 elisp 初始化结构。
 
-The main advantages of this Emacs Starter Kit are
-- better default settings
-- easy loading of many useful libraries and configurations
-- "literate" customization embedded in Org-mode files
-- an organizational directory structure
-- git provides for version control, backup, and sharing
-- easy installation with no need to compile external packages
+这个 Emacs 启动套件主要优点有
+- 更合理的默认设置
+- 方便载入许多有用的库与配置
+- 有组织的目录结构
+- 用 git 来进行版本控制、备份与分享
+- 安装容易，不需要编译外部软件包
 
-The latest version is at http://github.com/eschulte/emacs24-starter-kit/
+最新的英文版本地址为 http://github.com/eschulte/emacs24-starter-kit/
 
-For more information including use and installation instructions see
-http://eschulte.github.com/emacs24-starter-kit/
+使用与安装中的更多建议参见 http://eschulte.github.com/emacs24-starter-kit/
+
+中文翻译参见 http://github.com/exaos/emacs24-starter-kit/
