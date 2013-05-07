@@ -12,78 +12,72 @@ Emacs 犹如中午的太阳辉耀着群星般令所有其它的编辑软件失�
   :PROPERTIES:
   :CUSTOM_ID: introduction
   :END:
-This should provide a saner set of defaults than you get normally with
-Emacs. It's intended for beginners, but provides a good elisp
-initialization structure for all levels of users.
+这个套件提供的内容应该比你通常打开 Emacs 时的默认设置更全面些。虽然它针对的是初
+学者，但也对所有层次的用户提供了一个很好的 elisp 初始化结构。
 
-The main advantage of this Emacs Starter Kit are
-- better default settings
-- inclusion of many useful libraries and configurations
-- "literate" customization embedded in Org-mode files
-- an organizational directory structure
-- git provides for version control, backup, and sharing
+这个 Emacs 起步套件主要优点有
+- 更佳的默认设置
+- 包含许多有用的库和配置
+- 嵌入在 Org-mode 文件中的“文学”配置方法
+- 有组织的目录结构
+- 采用 git 来提供版本控制、备份和共享
 
-The latest version is at http://github.com/eschulte/emacs24-starter-kit/
+最新的英文版本参见 http://github.com/eschulte/emacs24-starter-kit/
 
-** Learning
+最新的中文版本参见 http://github.com/exaos/emacs24-starter-kit/
+
+** 学习
    :PROPERTIES:
    :CUSTOM_ID: learning
    :END:
-This won't teach you Emacs, but it'll make it easier to get
-comfortable. To access the tutorial, press control-h followed by t
-from within Emacs.
+这儿不会教你如何使用 Emacs, 但会令它用起来更舒服。要访问教程，请在 Emacs 里按
+control-h, 然后再按 t.
 
-The [[http://emacswiki.org][Emacs Wiki]] is also very handy.
+英文版的 [[http://emacswiki.org][Emacs Wiki]] 用起来很顺手。中文的资料暂且参考：
+  - 水木清华 BBS 的 [[http://www.newsmth.net/nForum/#!board/Emacs][Emacs 版]] 以及该版 [[http://smacs.github.io/][在 GitHub 上的资料]]
+  - [[http://emacser.com/][Emacs 中文网]]
 
-** Installation
+** 安装
    :PROPERTIES:
    :CUSTOM_ID: installation
    :END:
 
-1. Install Emacs version 24 or greater.  Use your package manager if
-   you have one and it has an install candidate for Emacs 24,
-   otherwise install it directly [[http://savannah.gnu.org/projects/emacs/][from source]], or Mac binaries may be
-   downloaded from the /nightlies/ section of
-   http://emacsformacosx.com/builds
-2. Checkout a version of the starter kit using git -- if you're new to
-   git checkout this [[http://www.kernel.org/pub/software/scm/git/docs/gittutorial.html][git-tutorial]], also we'd highly recommend that you
-   try out [[http://zagadka.vm.bytemark.co.uk/magit/magit.html][magit]] the Emacs mode for git interaction.
+1. 安装 Emacs 24 或以上版本。如果你有软件包管理器并且在软件仓库中有 Emacs 24 的
+   包，就直接使用它，否则直接从 [[http://savannah.gnu.org/projects/emacs/][源代码]] 安装吧；针对 Mac 的二进制包可以如后站点的
+   /nightlies/ 中下载: http://emacsformacosx.com/builds
+2. 使用 git 检出本套件的一个版本 -- 如果你是个 git 新手，先读一个这个 [[http://www.kernel.org/pub/software/scm/git/docs/gittutorial.html][git-教程]]
+   (英文), 并且我们强烈建议你使用 Emacs 的 [[http://zagadka.vm.bytemark.co.uk/magit/magit.html][magit]] mode 来与 git 进行交互。
    #+begin_src sh
      git clone http://github.com/eschulte/emacs24-starter-kit.git
    #+end_src
-3. Move the resulting directory to =~/.emacs.d= [1]
-7. Launch Emacs!
+3. 切换到最终生成的目录 =~/.emacs.d= [1]
+7. 启动 Emacs!
 
-After setup you may need to restart Emacs one or twice while it
-downloads packages from [[* Emacs Lisp Package Archive][ELPA]] -- errors parsing html from
-=*tromey.com:80*= can generally be safely ignored.
+安装之后，你需要重启 Emacs 一到两次，以便它从 [[* Emacs Lisp Package Archive][ELPA]] 下载扩展包 -- 来自
+=*tromey.com:80*= 的一些 HTML 解析错误可以放心地忽略掉。
 
-If you are missing some autoloads after an update (should manifest
-itself as =void function: foobar= errors) try M-x regen-autoloads.
+如果升级后你丢失了一些自动加载的内容 (应该显示为 =void function: foobar= 之类的
+错误), 试试 =M-x regen-autoloads=.
 
-If you want to keep your regular =~/.emacs.d= in place and just launch
-a single instance using the starter kit, try the following invocation:
+如果你想保留自己常规的 =~/.emacs.d= 不变，而仅仅用起步套件启动一个实例，试试如下
+调用方式：
 
 #+begin_src sh
   emacs -q -l ~/path/to/emacs24-starter-kit/init.el
 #+end_src
 
-Note that having a =~/.emacs= file might override the starter kit
-loading, so if you've having trouble loading it, make sure that file
-is not present.
+注意，如果已经有了 =~/.emacs= 文件，它有可能会覆盖掉起步套件的加载，所以如果你在
+加载时有问题，要确保此文件不存在。
 
-** Structure
+** 结构
    :PROPERTIES:
    :CUSTOM_ID: structure
    :END:
-The =init.el= file is where everything begins. It is loaded
-automatically by Emacs on startup, its sole purpose is to load the
-elisp code embedded in this file.  This file then loads some minimal
-configuration which should be generally useful, and goes on to load
-user-specific configuration files from the following locations
-mentioned in [[customizations]] immediately below.
+文件 =init.el= 是所有配置加载开始的地方。它会在 Emacs 启动时自动加载，它的主要目
+的是载嵌入在此文件中的 elisp 代码。此文件会加载一些最小通用的配置，然后再加载用
+户指定的配置文件，相应的位置参见紧接着的 [[customization][配置]] 一节内容。
 
-** Customization
+** 配置
    :PROPERTIES:
    :CUSTOM_ID: customization
    :tangle:   no
@@ -198,43 +192,37 @@ generally useful please submit it to the starter kit core!
 - [[file:starter-kit-python.org][python]]
 - [[file:starter-kit-ruby.org][ruby]]
 
-** Emacs Lisp Package Archive
+** Emacs Lisp 扩展包存档
    :PROPERTIES:
    :CUSTOM_ID: emacs-lisp-package-archive
    :END:
 
-Libraries from [[http://tromey.com/elpa][ELPA]] are preferred when available since dependencies
-are handled automatically, and the burden to update them is removed
-from the user.  ELPA is now an official part of Emacs so no special
-configuration is required to download and install packages.  Packages
-installed through ELPA will be stored in the =elpa/= sub-directory of
-this directory.
+最好有来自于 [[http://tromey.com/elpa][ELPA]] 的可用扩展包，因为相应的依赖关系会自动解决掉，并且不需要用户自
+己去更新包。 ELPA 目前已经成为 Emacs 正式发行的一部分，因此下载与安装扩展包已不
+再需要特殊的设置。通过 ELPA 安装的扩展争会在此目录的 =elpa/= 子目录下。
 
-** Contributing
+** 反馈与贡献
    :PROPERTIES:
    :CUSTOM_ID: contributing
    :END:
-If you know your way around Emacs, please try out the starter kit as a
-replacement for your regular dotfiles for a while. If there's anything
-you just can't live without, add it or let me know so I can add
-it. Take a look at what happens in [[file:init.el][init.el]] to get started.
+如果你有自己使用 Emacs 的方式，请试试用这个起步套件替换一会你通常的启动文件。如
+果有些东西你不可缺少，就添加进来或者告诉我以便我来添加。先从 [[file:init.el][init.el]] 里的内容开
+始吧。
 
-Files are licensed under the same license as Emacs unless otherwise
-specified. See the file [[file:COPYING][COPYING]] for details.
+除非特别声明，文件均采用与 Emacs 相同的授权。详情参照 [[file:COPYING][版权文件]]。
 
-The latest version is at http://github.com/eschulte/emacs24-starter-kit/
+最新英文版位于 http://github.com/eschulte/emacs24-starter-kit/
 
 * 实现
   :PROPERTIES:
   :CUSTOM_ID: implementation
   :END:
 
-This section contains all code implementing the Emacs Starter Kit.  It
-is probably safe to stop reading at this point unless you are
-interested in the actual code implementing the starter kit.
+本节包含所有 Emacs 起步套件的代码实现。除非你对实现起步套件的代码感兴趣，那么到
+这儿就可以不用读下去了。
 
-** Starter kit basics
-- Load path etc.
+** 起步套件基础内容
+- 加载路径等
   #+name: starter-kit-load-paths
   #+begin_src emacs-lisp
     (add-to-list 'load-path starter-kit-dir)
@@ -243,9 +231,8 @@ interested in the actual code implementing the starter kit.
     (setq custom-file (concat starter-kit-dir "custom.el"))
   #+end_src
 
-- Ubiquitous Packages which should be loaded on startup rather than
-  autoloaded on demand since they are likely to be used in every
-  session.
+- 无处不在的包不要在需要时才加载，而应该在启动时就加载了，因为它们几乎在每个程序
+  对话中都会用到。
   #+name: starter-kit-load-on-startup
   #+begin_src emacs-lisp
     (require 'cl)
@@ -256,7 +243,7 @@ interested in the actual code implementing the starter kit.
     (require 'recentf)
   #+end_src
 
-- ELPA archive repositories and two packages to install by default.
+- ELPA 档案仓库和两个默认安装的包
   #+begin_src emacs-lisp
     (setq package-archives
           '(("gnu"         . "http://elpa.gnu.org/packages/")
@@ -276,7 +263,7 @@ interested in the actual code implementing the starter kit.
         (package-install package)))
   #+end_src
 
-- Functions for loading other parts of the starter kit
+- 用于加载起步套件其它部分的函数
   #+name: starter-kit-load
   #+begin_src emacs-lisp
     (defun starter-kit-load (file &optional header-or-tag)
@@ -329,14 +316,14 @@ interested in the actual code implementing the starter kit.
            file))))
   #+end_src
 
-- Work around a bug on OS X where system-name is FQDN.
+- 处理一个由于 OS X 使用完全域名 (FQDN) 所导致的 bug
   #+name: starter-kit-osX-workaround
   #+begin_src emacs-lisp
     (if (eq system-type 'darwin)
         (setq system-name (car (split-string system-name "\\."))))
   #+end_src
 
-** Starter kit core
+** 起步套件核心
    :PROPERTIES:
    :CUSTOM_ID: starter-kit-core
    :END:
@@ -400,8 +387,8 @@ everyone using the starter kit.
     (add-hook 'org-mode-hook #'yas/org-setup)
   #+end_src
 
-** Load User/System Specific Files
-*** System/User specific customizations
+** 加载用户／系统指定文件
+*** 系统／用户指定配置
 You can keep system- or user-specific customizations here in either
 raw emacs-lisp files or as embedded elisp in org-mode files (as done
 in this document).
@@ -450,7 +437,7 @@ After we've loaded all the Starter Kit defaults, lets load the User's stuff.
                :test #'string=)))))
 #+end_src
 
-*** Settings from M-x customize
+*** 来自 =M-x customize= 的配置
 #+name: m-x-customize-customizations
 #+begin_src emacs-lisp
   (load custom-file 'noerror)
@@ -458,8 +445,7 @@ After we've loaded all the Starter Kit defaults, lets load the User's stuff.
 
 * 脚注
 
-[1] If you already have a directory at =~/.emacs.d= move it out of the
-    way and put this there instead.
+[1] 如果你已经有一个目录为 =~/.emacs.d=, 把它移走，并用本目录替换它。
 
-[2] The emacs starter kit uses [[http://orgmode.org/][Org Mode]] to load embedded elisp code
-    directly from literate Org-mode documents.
+[2] 此 emacs 起步套件使用 [[http://orgmode.org/][Org Mode]] 来加载直接嵌入在文学化 Org-mode 文档中的
+    elisp 代码。
