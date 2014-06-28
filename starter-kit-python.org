@@ -1,33 +1,31 @@
-#+TITLE: Starter Kit Python
+#+TITLE: 起步套件：Python
 #+OPTIONS: toc:nil num:nil ^:nil
 
-This is part of the [[file:starter-kit.org][Emacs Starter Kit]].
+这是 [[file:starter-kit.org][Emacs 起步套件]] 的一部分。
 
-* Starter kit Python
+* 起步套件：Python
 
-Support for the Python programming language.
+支持 Python 编程语言。
 
-** Check Dependencies
+** 检查依赖关系
 
-Determine whether required packages are installed. If not, use ELPA to
-install them.
+检测所需要的软件包是否安装。如果没有，使用 ELPA 来安装它们。
 #+begin_src emacs-lisp
   (starter-kit-install-if-needed 'python-mode 'ipython)
 #+end_src
 
-** Use Python's python-mode.el instead of Emacs' python.el
+** 使用 Python 的 =python-mode.el= 来取代 Emacs 的 =python.el=
    :PROPERTIES:
    :CUSTOM_ID: python
    :END:
-Replace the Python mode that comes with Emacs by the Python mode
-supplied by the Python distribution itself.
+用 Python 发行版本自带的 Python mode 替换掉 Emacs 中携带的 Python mode.
 #+begin_src emacs-lisp
 (require 'python-mode)
 (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
 (add-to-list 'interpreter-mode-alist '("python" . python-mode))
 #+end_src
 
-** Use Cython mode
+** 使用 Cython mode
    :PROPERTIES:
    :CUSTOM_ID: cython
    :END:

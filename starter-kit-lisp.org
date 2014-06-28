@@ -1,7 +1,7 @@
-#+TITLE: Starter Kit Lisp
+#+TITLE: 起步套件：Lisp
 #+OPTIONS: toc:nil num:nil ^:nil
 
-This is part of the [[file:starter-kit.org][Emacs Starter Kit]].
+这是 [[file:starter-kit.org][Emacs 起步套件]] 的一部分。
 
 * Starter Kit Lisp
 Support for editing list dialects including [[* Emacs Lisp][Emacs Lisp]], [[* Scheme][Scheme]],

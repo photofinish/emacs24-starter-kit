@@ -1,9 +1,9 @@
-#+TITLE: Starter Kit Gnus
+#+TITLE: 起步套件 Gnus
 #+OPTIONS: toc:nil num:nil ^:nil
 
-This is part of the [[file:starter-kit.gnus][Emacs Starter Kit]].
+这是 [[file:starter-kit.org][Emacs 起步套件]] 的一部分。
 
-* Starter Kit Gnus
+* 起步套件 Gnus
 Configuration for the notoriously difficult to configure [[http://www.gnus.org/][Gnus]] email
 client
 

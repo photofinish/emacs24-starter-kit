@@ -1,13 +1,11 @@
-#+TITLE: Starter Kit Publish
+#+TITLE: 起步套件：发布站点
 #+OPTIONS: toc:nil num:nil ^:nil
 
-This is part of the [[file:starter-kit.org][Emacs Starter Kit]].
+这是 [[file:starter-kit.org][Emacs 起步套件]] 的一部分。
 
-This file is used to publish the starter kit documentation to =.html=
-in the =doc/= directory.
+此文件用于将起步套件文档用 =.html= 格式发布到 =doc/= 目录下。
 
-This code defines the =starter-kit-project= which is used to publish
-the documentation for the Starter Kit to html.
+这段代码定义了 =starter-kit-project= 变量，用于将起步套件发布成 HTML 文档。
 
 #+begin_src emacs-lisp :results silent
   (unless (boundp 'org-publish-project-alist)

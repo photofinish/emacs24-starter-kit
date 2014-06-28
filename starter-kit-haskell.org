@@ -1,7 +1,7 @@
-#+TITLE: Starter Kit Haskell
+#+TITLE: 起步套件：Haskell
 #+OPTIONS: toc:nil num:nil ^:nil
 
-This is part of the [[file:starter-kit.org][Emacs Starter Kit]].
+这是 [[file:starter-kit.org][Emacs 起步套件]] 的一部分。
 
 * Starter Kit Haskell
   :PROPERTIES:

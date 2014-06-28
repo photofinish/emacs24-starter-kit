@@ -1,7 +1,7 @@
-#+TITLE: Starter Kit Misc
+#+TITLE: 起步套件：杂项
 #+OPTIONS: toc:nil num:nil ^:nil
 
-This is part of the [[file:starter-kit.org][Emacs Starter Kit]].
+这是 [[file:starter-kit.org][Emacs 起步套件]] 的一部分。
 
 * Starter Kit Misc
 Things that don't fit anywhere else.

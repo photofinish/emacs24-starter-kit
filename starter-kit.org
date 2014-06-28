@@ -84,103 +84,72 @@ control-h, 然后再按 t.
    :tangle:   no
    :END:
 
-The defaults built into the starter kit are only the beginning of
-most users customization of Emacs to suit their needs.  The starter
-kit provides a number of places for additional user and system
-specific customization.  These are designed in such a way that it will
-be easy for you to continue tracking your own personal customization
-inside the starter-kit while retaining your ability to pull down
-general starter-kit updates without conflict.
+此起步套件集成的默认设置仅仅是多数用户调整 Eamcs 的配置来满足自己需求的第一步。此
+起步套件预留一些位置用以进行额外的用户和系统定制设置。这些设计旨在方便让你在此起
+步套件中继续自己的个性设置，并且能够避免因为常规套件升级而带来的冲突。
 
-- git branch :: The first step to user-specific customization is (like
-     in any git project) to MAKE A BRANCH FOR YOUR LOCAL CHANGES.
-     Save the master branch for pulling down new versions of the
-     starter kit, and save all of your personal information in a
-     personal branch.  That way you never have to worry about
-     accidentally =git push='ing up a patch with all of your gnus
-     email passwords.
+- git branch :: 进行用户定制设置的第一步是（像其它任何 git 项目一样）为你自己的本
+     地变更创建一个新分支。保存主分支用于检取出起步套件的新版本，而你所有的个人信
+     息均保存在个人分支中。这些，你就不用担心意外的命令 =git push= 会修改了你的
+     gnus 电子邮件密码。
 
-- User specific config :: Your personal configuration information can
-     be stored in a user-specific-config file.  This is the file named
-     after your user with the extensions =.el= or =.org= [2].  If
-     you're unsure of your user name evaluate the following code block
-     to find out.
+- 用户定制配置 :: 你的个人配置信息可以保存在一个“用户定义配置”文件中。这是一个
+     以你的用户名来命名的以 =.el= 或 =.org= 结尾的文件[2]。如果你不确定自己的用户
+     名是什么，可用如下的指令来查找。
      #+begin_src sh
        echo $USER # note: on windows this is the USERNAME variable
      #+end_src
 
-     If your configuration starts to feel cramped in a single file
-     (although with the nested headlines of an Org-mode file, that
-     could take a while) and you want to stretch your config's legs,
-     you can also create a directory named after your system user
-     name.  If a such a directory exists, it will be added to the
-     load-path, and any elisp or org-mode w/embedded elisp files in it
-     will be loaded.
+     如果你的配置文件在一个文件中显得杂乱难辨（尽管可以在 Org-mode 文件中用嵌套的
+     标题行，这也颇费时间），而你又想扩展自己的配置，则可以创建一个以你的系统用户
+     名命名的目录。如果这样的目录存在，它会被自动添加到 ~load-path~ 中，此目录下
+     的任何 elisp 文件或 org-mode 中嵌入的 elisp 代码都将会被加载。
 
-- System specific config :: Finally, you may want to configure
-     different settings for different machines.  The Starter Kit will
-     look for a file named after the current hostname ending in =.el=
-     or =.org= which will allow host-specific configuration.  If
-     you're unsure of your hostname the following can be executed to
-     find out.
+- 系统定制配置 :: 最后，你或许会想为不同的机器定制不同的设置。此启动套件会寻找一
+     个以当前机器名命名的以 =.el= 或 =.org= 结尾的文件，该文件中保留有为主机定制
+     的配置。如果你对机器名不确定，可执行如下命令来寻找。
      #+begin_src sh
        hostname
      #+end_src
 
-- Activating more of the starter kit :: By default, the starter kit
-     only includes customizations which are likely to be useful across
-     nearly any Emacs install (the only automatically loaded external
-     files are those listed in [[#load-the-starter-kit-core][Load the rest of the starter kit core]]).
-     You may have noticed that there are many other
-     =starter-kit-*.org= files located in this directory.  A good
-     first step is to browse these files and begin optionally loading
-     those that look relevant to your workflow.  For example, if you
-     often work with Python source code you will probably want to load
-     =starter-kit-python.org= either by directly copying the sections
-     that look useful into your personal config, or simply by loading
-     the entire file directly with the following.
+- 激活起步套件的更多功能 :: 默认情况下，起步套件只包含这些配置，它们尽可能适用几
+     乎所有的 Emacs 安装版本（只自动加载这些外部文件，参见[[#load-the-starter-kit-core][加载起步套件核心扩展]]）。
+     你可能注意到此目录下有许多其它的 =starter-kit-*.org= 文件。最佳选择是先浏览
+     这些这些文件，然后选择性地加载那些与你的工作流程相关的内容。比如，你只需要处
+     理 Python 源代码，你则可能需要加载 =starter-kit-python.org= 文件，可以直接拷
+     贝其内容到你的个人配置文件中，或者直接这样加载整个文件：
      #+begin_src emacs-lisp
        (starter-kit-load "python")
      #+end_src
 
-     Alternately you can load only one particular subsection of an
-     included file, for example to load just the "pretty-summary"
-     section of =starter-kit-gnus.org= run the following.
+     另外，你还可以只加载包含文件中特定的某个小节，比如只加载
+     =starter-kit-gnus.org= 文件中 "pretty-summary" 小节的内容，则可执行如下代码：
      #+begin_src emacs-lisp
        (starter-kit-load "gnus" "pretty-summary")
      #+end_src
-     
-     Finally you can load just those subsections of a file which have
-     a specific tag, so to load just the two sections of
-     =starter-kit-misc-recommended.org= which are tagged =visual= add
-     the following to your personal initialization.  Note: header id's
-     take priority over tags.
+
+     最后，你还可以只加载文件中带有指定标签的小节，比如只加载文件
+     =starter-kit-misc-recommended.org= 中带有 =visual= 标签的小节以便满足你的个
+     性初始化。注意：头部 ID 的优先级要高于标签。
      #+begin_src emacs-lisp
        (starter-kit-load "gnus" "visual")
      #+end_src
 
-- Installing more elisp libraries :: The easiest way to install new
-     libraries is through the Emacs Lisp Package Archive (see [[#emacs-lisp-package-archive][Emacs
-     Lisp Package Archive]] below).  When a library is not available
-     through ELPA you can grab it's source and place it directly in
-     the =src= directory.  Any packages found there will automatically
-     be added to your load-path when Emacs starts up, and are
-     guaranteed not to conflict with future starter-kit updates.
+- 安装更多的 elisp 库 :: 安装新库的最简单办法就是通过 Emacs Lisp 包档案库（参见下
+     面的 [[#emacs-lisp-package-archive][Emacs Lisp Package Archive]] 内容）。当某个库不在 ELPA 中时，你可以抓取其
+     源代码直接存放在 =src= 目录下。当 Emacs 启动时，此目录下找到的任何软件包均会
+     自动添加到你的 ~load-path~ 中，并且不会与将来的起步套件升级相冲突。
 
-- Misc :: Some additional miscellaneous configuration and getting
-     started suggestions
-   - First see the [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Customization.html#Customization][Customization]] node in the Emacs manual.  Available
-     online or through the =info= command (run with =C-h i=).
-   - =grep='ing through the =starter-kit-*= files in this directory
-     can provide useful examples for how to do things like install
-     major modes, define keybindings, etc..
-   - read the following [[http://www.gnu.org/software/emacs/elisp/html_node/Key-Binding-Conventions.html][Key-Binding-Conventions]] before defining too
-     many personal key bindings
+- 杂项 :: 一些额外的杂项配置和起步建议
+    - 首先，参考 Emacs 手册中 [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Customization.html#Customization][Customization]] 一节的内容。该内容可在线或者通过
+      =info= 命令 (运行 =C-h i=) 来查看。
+    - 查找 (=grep=) 此目录下 =starter-kit-*= 文件中的内容，可得到一些有用的示例，
+      比如如何安装 major 模式，定义按键绑定，等等。
+    - 在定义更多的个人按键绑定之前，先阅读后面的 [[http://www.gnu.org/software/emacs/elisp/html_node/Key-Binding-Conventions.html][Key-Binding-Conventions]] 内容。
 
-*** Optional starter kit packages
-The following customization packages are shipped with the starter kit
-but are not loaded by default.  If you have code which you find
-generally useful please submit it to the starter kit core!
+*** 可选的起步套件包
+随同起步套件一起的还有如下的定制包，但不会默认加载。如果你发现一些通用的代码，请
+提交给起步套件核心团队！
 - [[file:starter-kit-eshell.org][eshell]]
 - [[file:starter-kit-g-client.org][g-client]]
 - [[file:starter-kit-gnus.org][gnus]]
@@ -274,10 +243,10 @@ generally useful please submit it to the starter kit core!
       (package-initialize)
 
       (defvar starter-kit-packages nil
-        "Libraries that should be installed by default (currently none).")
+	"默认应该安装的库（当前为空）。")
 
       (defun starter-kit-install-if-needed (&rest packages)
-        "Install PACKAGES using ELPA if they are not loadable or installed locally."
+	"若软件包未加载或者本地没有安装，则使用 ELPA 安装它。"
         (when packages
           (unless package-archive-contents
             (package-refresh-contents))
@@ -291,19 +260,16 @@ generally useful please submit it to the starter kit core!
   #+name: starter-kit-load
   #+begin_src emacs-lisp
     (defun starter-kit-load (file &optional header-or-tag)
-      "Load configuration from other starter-kit-*.org files.
-    If the optional argument is the id of a subtree then only
-    configuration from within that subtree will be loaded.  If it is
-    not an id then it will be interpreted as a tag, and only subtrees
-    marked with the given tag will be loaded.
-    
-    For example, to load all of starter-kit-lisp.org simply
-    add (starter-kit-load \"lisp\") to your configuration.
-    
-    To load only the 'window-system' config from
-    starter-kit-misc-recommended.org add
-     (starter-kit-load \"misc-recommended\" \"window-system\")
-    to your configuration."
+      "从其它的 starter-kit-*.org 文件中加载配置。如果可选的参数是子项
+    的 ID, 则只加载此子项的内容。如果它不是 ID, 则解析为标签，只有标记
+    此标签的子项会被加载。
+
+    比如，要加载 start-kit-lisp.org 中的所有内容，在你的配置中添加
+    (starter-kit-load \"lisp\") 即可。
+
+    如果只从 starter-kit-misc-recommended.org 中加载 'window-system'
+    的配置，则在你的配置中添加
+     (starter-kit-load \"misc-recommended\" \"window-system\")"
       (let ((file (expand-file-name (if (string-match "starter-kit-.+\.org" file)
                                         file
                                       (format "starter-kit-%s.org" file))
@@ -378,16 +344,13 @@ generally useful please submit it to the starter kit core!
 
 ** 加载用户／系统指定文件
 *** 系统／用户指定配置
-You can keep system- or user-specific customizations here in either
-raw emacs-lisp files or as embedded elisp in org-mode files (as done
-in this document).
+你可以在此处保留系统或用户指定的配置，用 emacs-lisp 文件，或者嵌入在 Org-mode 文
+件中的 elisp 代码（此文件中没有）。
 
-You can keep elisp source in the =src= directory.  Packages loaded
-from here will override those installed by ELPA.  This is useful if
-you want to track the development versions of a project, or if a
-project is not in elpa.
+你可以保留 =src= 目录下的 elisp 源码。此处加载的软件包会覆盖掉那些通过 ELPA 安装
+的包。如果你想追踪一个项目的开发版本，或者某个项目不在 ELPA 中是，这样做很有用。
 
-After we've loaded all the Starter Kit defaults, lets load the User's stuff.
+当我们加载所有默认的起步套件后，再来加载一些用户的东西。
 #+name: starter-kit-load-files
 #+begin_src emacs-lisp
   (flet ((sk-load (base)
