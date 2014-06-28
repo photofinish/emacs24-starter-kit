@@ -1,12 +1,12 @@
 #+TITLE: Emacs 起步套件
 #+OPTIONS: toc:2 num:nil ^:nil
 
-#+BEGIN_QUOTE
-Emacs 犹如中午的太阳辉耀着群星般令所有其它的编辑软件失色。它不止是大而亮；它只是
-令所有其它的一切都消失了。
+#+begin_quote
+  Emacs 犹如中午的太阳辉耀着群星般令所有其它的编辑软件失色。它不止是大而亮；它只
+  是令所有其它的一切都消失了。
 
--- 尼尔．史迪芬森，《起初，只有命令行》
-#+END_QUOTE
+  -- 尼尔．史迪芬森，《起初，只有命令行》
+#+end_quote
 
 * 简介
   :PROPERTIES:
@@ -51,7 +51,7 @@ control-h, 然后再按 t.
      git clone http://github.com/eschulte/emacs24-starter-kit.git
    #+end_src
 3. 切换到最终生成的目录 =~/.emacs.d= [1]
-7. 启动 Emacs!
+4. 启动 Emacs!
 
 安装之后，你需要重启 Emacs 一到两次，以便它从 [[* Emacs Lisp Package Archive][ELPA]] 下载扩展包 -- 来自
 =*tromey.com:80*= 的一些 HTML 解析错误可以放心地忽略掉。
@@ -63,7 +63,8 @@ control-h, 然后再按 t.
 调用方式：
 
 #+begin_src sh
-  emacs -q -l ~/path/to/emacs24-starter-kit/init.el
+  emacs -q -l ~/path/to/emacs24-starter-kit/init.el \
+        --eval "(run-hooks 'after-init-hook)"
 #+end_src
 
 注意，如果已经有了 =~/.emacs= 文件，它有可能会覆盖掉起步套件的加载，所以如果你在
@@ -197,17 +198,16 @@ generally useful please submit it to the starter kit core!
    :CUSTOM_ID: emacs-lisp-package-archive
    :END:
 
-最好有来自于 [[http://tromey.com/elpa][ELPA]] 的可用扩展包，因为相应的依赖关系会自动解决掉，并且不需要用户自
-己去更新包。 ELPA 目前已经成为 Emacs 正式发行的一部分，因此下载与安装扩展包已不
-再需要特殊的设置。通过 ELPA 安装的扩展争会在此目录的 =elpa/= 子目录下。
+最好使用用来自于 [[http://tromey.com/elpa][ELPA]] 的可用的扩展包，因为相应的依赖关系会自动解决掉，并且不需要
+用户自己去更新包。 ELPA 目前已经成为 Emacs 正式发行的一部分，因此下载与安装扩展包
+已不再需要特殊的设置。通过 ELPA 安装的扩展会存放在此目录的 =elpa/= 子目录下。
 
 ** 反馈与贡献
    :PROPERTIES:
    :CUSTOM_ID: contributing
    :END:
-如果你有自己使用 Emacs 的方式，请试试用这个起步套件替换一会你通常的启动文件。如
-果有些东西你不可缺少，就添加进来或者告诉我以便我来添加。先从 [[file:init.el][init.el]] 里的内容开
-始吧。
+如果你有自己使用 Emacs 的方式，请试试用这个起步套件替换一会你通常的启动文件。如果
+有些东西你不可缺少，就添加进来，或者告诉我让我来添加。先从 [[file:init.el][init.el]] 里的内容开始吧。
 
 除非特别声明，文件均采用与 Emacs 相同的授权。详情参照 [[file:COPYING][版权文件]]。
 
@@ -225,7 +225,13 @@ generally useful please submit it to the starter kit core!
 - 加载路径等
   #+name: starter-kit-load-paths
   #+begin_src emacs-lisp
-    (add-to-list 'load-path starter-kit-dir)
+    (let ((elisp-dir (expand-file-name "src" starter-kit-dir)))
+      ;; add the src directory to the load path
+      (add-to-list 'load-path elisp-dir)
+      ;; load specific files
+      (when (file-exists-p elisp-dir)
+        (let ((default-directory elisp-dir))
+          (normal-top-level-add-subdirs-to-load-path))))
     (setq autoload-file (concat starter-kit-dir "loaddefs.el"))
     (setq package-user-dir (concat starter-kit-dir "elpa"))
     (setq custom-file (concat starter-kit-dir "custom.el"))
@@ -243,24 +249,42 @@ generally useful please submit it to the starter kit core!
     (require 'recentf)
   #+end_src
 
+- Function to check if a packages exist in the load path.  This may be
+  used to preempt the installation of ELPA versions of packages whose
+  source may already be found in the load path.
+  #+name: starter-kit-loadable
+  #+begin_src emacs-lisp
+    (defun starter-kit-loadable-p (package)
+      "Check if PACKAGE is loadable from a directory in `load-path'."
+      (let ((load-file (concat (symbol-name package) ".el")))
+        (catch 'file-found
+          (dolist (dir load-path)
+            (let ((path (expand-file-name load-file dir)))
+              (when (file-exists-p path)
+                (throw 'file-found path)))))))
+  #+end_src
+
 - ELPA 档案仓库和两个默认安装的包
   #+begin_src emacs-lisp
-    (setq package-archives
-          '(("gnu"         . "http://elpa.gnu.org/packages/")
-            ("original"    . "http://tromey.com/elpa/")
-            ("org"         . "http://orgmode.org/elpa/")
-            ("marmalade"   . "http://marmalade-repo.org/packages/")))
-    (package-initialize)
-    
-    (defvar starter-kit-packages
-      (list 'yasnippet-bundle)
-      "Libraries that should be installed by default.")
-    
-    (unless package-archive-contents
-      (package-refresh-contents))
-    (dolist (package starter-kit-packages)
-      (unless (package-installed-p package)
-        (package-install package)))
+      (setq package-archives
+            '(("gnu"         . "http://elpa.gnu.org/packages/")
+              ("org"         . "http://orgmode.org/elpa/")
+              ("melpa"       . "http://melpa.milkbox.net/packages/")
+              ("marmalade"   . "http://marmalade-repo.org/packages/")))
+      (package-initialize)
+
+      (defvar starter-kit-packages nil
+        "Libraries that should be installed by default (currently none).")
+
+      (defun starter-kit-install-if-needed (&rest packages)
+        "Install PACKAGES using ELPA if they are not loadable or installed locally."
+        (when packages
+          (unless package-archive-contents
+            (package-refresh-contents))
+          (dolist (package packages)
+            (unless (or (starter-kit-loadable-p package)
+                        (package-installed-p package))
+              (package-install package)))))
   #+end_src
 
 - 用于加载起步套件其它部分的函数
@@ -319,7 +343,9 @@ generally useful please submit it to the starter kit core!
 - 处理一个由于 OS X 使用完全域名 (FQDN) 所导致的 bug
   #+name: starter-kit-osX-workaround
   #+begin_src emacs-lisp
-    (if (eq system-type 'darwin)
+    (if (or
+         (eq system-type 'darwin)
+         (eq system-type 'berkeley-unix))
         (setq system-name (car (split-string system-name "\\."))))
   #+end_src
 
@@ -327,64 +353,27 @@ generally useful please submit it to the starter kit core!
    :PROPERTIES:
    :CUSTOM_ID: starter-kit-core
    :END:
-The following files contain the remainder of the core of the Emacs
-Starter Kit.  All of the code in this section should be loaded by
-everyone using the starter kit.
+如下文件包含了 Emacs 起步套件的其余核心部件。任何使用此套件的人都需要加载此节的所
+有代码。
 
-- Starter kit function definitions in [[file:starter-kit-defuns.org][starter-kit-defuns]]
+- 启动套件函数在 [[file:starter-kit-defuns.org][starter-kit-defuns]] 中定义
   #+begin_src emacs-lisp
   (starter-kit-load "starter-kit-defuns.org")
   #+end_src
 
-- Key Bindings in [[file:starter-kit-bindings.org][starter-kit-bindings]]
+- 按键绑定在 [[file:starter-kit-bindings.org][starter-kit-bindings]] 中定义
   #+begin_src emacs-lisp
   (starter-kit-load "starter-kit-bindings.org")
   #+end_src
 
-- Miscellaneous settings in [[file:starter-kit-misc.org][starter-kit-misc]]
+- 杂项设置在 [[file:starter-kit-misc.org][starter-kit-misc]] 中
   #+begin_src emacs-lisp
   (starter-kit-load "starter-kit-misc.org")
   #+end_src
 
-- Registers for jumping to commonly used files in [[file:starter-kit-registers.org][starter-kit-registers]]
+- 跳转到的常用文件的注册使用  [[file:starter-kit-registers.org][starter-kit-registers]]
   #+begin_src emacs-lisp
   (starter-kit-load "starter-kit-registers.org")
-  #+end_src
-
-- [[http://code.google.com/p/yasnippet/][yasnippet]] is yet another snippet expansion system for Emacs.  It is
-  inspired by TextMate's templating syntax.
-  - watch the [[http://www.youtube.com/watch?v=vOj7btx3ATg][video on YouTube]]
-  - see the [[http://yasnippet.googlecode.com/svn/trunk/doc/index.html][intro and tutorial]]
-
-  load the yasnippet bundle
-  #+begin_src emacs-lisp
-    (add-to-list 'load-path
-                 (expand-file-name  "yasnippet"
-                                    (expand-file-name "src"
-                                                      starter-kit-dir)))
-    (require 'yasnippet)
-    (yas/initialize)
-  #+end_src
-
-  load the snippets defined in the =./snippets/= directory
-  #+begin_src emacs-lisp
-    (yas/load-directory (expand-file-name "snippets" starter-kit-dir))
-  #+end_src
-
-  The latest version of yasnippets doesn't play well with Org-mode, the
-  following function allows these two to play nicely together.
-  #+begin_src emacs-lisp
-    (defun yas/org-very-safe-expand ()
-      (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
-    
-    (defun yas/org-setup ()
-      ;; yasnippet (using the new org-cycle hooks)
-      (make-variable-buffer-local 'yas/trigger-key)
-      (setq yas/trigger-key [tab])
-      (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
-      (define-key yas/keymap [tab] 'yas/next-field))
-    
-    (add-hook 'org-mode-hook #'yas/org-setup)
   #+end_src
 
 ** 加载用户／系统指定文件
@@ -415,19 +404,12 @@ After we've loaded all the Starter Kit defaults, lets load the User's stuff.
          (remove-extension (name)
            (string-match "\\(.*?\\)\.\\(org\\(\\.el\\)?\\|el\\)\\(\\.gpg\\)?$" name)
            (match-string 1 name)))
-    (let ((elisp-dir (expand-file-name "src" starter-kit-dir))
-          (user-dir (expand-file-name user-login-name starter-kit-dir)))
-      ;; add the src directory to the load path
-      (add-to-list 'load-path elisp-dir)
-      ;; load specific files
-      (when (file-exists-p elisp-dir)
-        (let ((default-directory elisp-dir))
-          (normal-top-level-add-subdirs-to-load-path)))
-      ;; load system-specific config
+    (let ((user-dir (expand-file-name user-login-name starter-kit-dir)))
+      ;; load system-specific -- 加载系统指定配置
       (sk-load system-name)
-      ;; load user-specific config
+      ;; load user-specific config -- 加载用户指定配置
       (sk-load user-login-name)
-      ;; load any files in the user's directory
+      ;; load any files in the user's directory -- 加载用户目录下的任意文件
       (when (file-exists-p user-dir)
         (add-to-list 'load-path user-dir)
         (mapc #'sk-load
